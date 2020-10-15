@@ -41,12 +41,6 @@ except FileNotFoundError:
 sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 100)
 sys.stderr = os.fdopen(sys.stderr.fileno(), 'w', 100)
 
-image_score_fail_on=config['fail_on']['score']
-big_vuln_fail_on=bool(config['fail_on']['big_vulnerability'])
-docker_registry=config['registry']['host']
-output=config['output']['format']
-clair_server=config['clair']['host']
-
 try:
     rocket_chat_enable=True
     rocket_hook_url = config['output']['rocketchat']['webhook_url']
@@ -54,23 +48,7 @@ try:
 except KeyError:
     rocket_chat_enable=False
 
-if args.registry != None:
-    docker_registry = args.registry
 
-image = args.image
-try:
-    image, image_tag = image.rsplit(':', 1)
-except ValueError:
-    image_tag = "latest"
-
-image_s = image.split('/')
-if len(image_s) == 1:
-    if args.no_namespace == True:
-        image_name = image
-    else:
-        image_name = "library/" + image
-elif len(image_s) >= 2:
-    image_name = image
 
 def y_req(address, method, h=None, data=None):
     if h is None:
@@ -302,3 +280,4 @@ if __name__ == '__main__':
     output_data()
 
 
+:1
