@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # vim:sw=4:ts=4:et
 import os
-import sys
 import yaml
 import requests
 """Yair core object."""
@@ -14,9 +13,14 @@ class Yair(object):
 
     def __init__(self, image, config_file=None, registry=None, no_namespace=False):
         self._yaml = self._parse_config(config_file)
+
+        # some args that can be overridden via cli
         self._registry = registry
         self._no_namespace = no_namespace
+
         self.image_name, self.image_tag = self._parse_image(image)
+
+        # handle requests session
         self.session = requests.Session()
         self.session.verify = self.docker_registry_ssl_verify
 
@@ -53,7 +57,7 @@ class Yair(object):
     @property
     def big_vuln_fail_on(self):
         return bool(self._yaml['fail_on']['big_vulnerability'])
-    
+
     @property
     def docker_registry(self):
         if self._registry:
@@ -90,7 +94,7 @@ class Yair(object):
     @property
     def output(self):
         return self._yaml['output']['format']
-    
+
     @property
     def clair_server(self):
         return self._yaml['clair']['host']
